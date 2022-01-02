@@ -1015,6 +1015,7 @@ const PDFViewerApplication = {
     } else if (file.url && file.originalUrl) {
       this.setTitleUsingUrl(file.originalUrl, file.url);
       parameters.url = file.url;
+      console.log('url',file.originalUrl);
     }
 
     const apiParameters = _app_options.AppOptions.getAll(_app_options.OptionKind.API);
@@ -1300,6 +1301,7 @@ const PDFViewerApplication = {
     } = pdfViewer;
     const pdfThumbnailViewer = this.pdfThumbnailViewer;
     pdfThumbnailViewer.setDocument(pdfDocument);
+    console.log('pdfdocument',pdfDocument._transport._params.url);
     const storedPromise = (this.store = new _view_history.ViewHistory(pdfDocument.fingerprints[0])).getMultiple({
       page: null,
       zoom: _ui_utils.DEFAULT_SCALE_VALUE,
@@ -2507,13 +2509,14 @@ let webViewerFileInputChange, webViewerOpenFile;
 
     if (!_app_options.compatibilityParams.disableCreateObjectURL) {
       let url = URL.createObjectURL(file);
-
+      
       if (file.name) {
         url = {
           url,
           originalUrl: file.name
         };
       }
+      console.log('url---',url);
       PDFViewerApplication.open(url);
     } else {
       PDFViewerApplication.setTitleUsingUrl(file.name);
@@ -2521,6 +2524,7 @@ let webViewerFileInputChange, webViewerOpenFile;
 
       fileReader.onload = function webViewerChangeFileReaderOnload(event) {
         const buffer = event.target.result;
+        
         PDFViewerApplication.open(new Uint8Array(buffer));
       };
 
